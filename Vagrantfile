@@ -8,7 +8,6 @@ machines = {
 }
 
 Vagrant.configure("2") do |config|
-
   machines.each do |name, conf|
     config.vm.define "#{name}" do |machine|
       machine.vm.box = "#{conf["image"]}"
@@ -26,6 +25,10 @@ Vagrant.configure("2") do |config|
         machine.vm.provision "shell", path: "master.sh"
       else
         machine.vm.provision "shell", path: "worker.sh"
+      end
+      
+      if "#{name}" == "master"
+      machine.vm.provision "shell", path: "services.sh"
       end
 
     end
